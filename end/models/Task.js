@@ -11,3 +11,16 @@ const TaskSchema = new mongoose.Schema({
     createTime: { type: Date, default: Date.now },
     updateTime: { type: Date, default: Date.now },
 });
+
+TaskSchema.pre('save', function(next) {
+    if(this.isNew) {
+        this.createTime = this.updateTime = Date.now();
+    } else {
+        this.updateTime = Date.now();
+    }
+    next();
+});
+
+const Task = mongoose.model('Task', TaskSchema);
+
+module.exports = Task;

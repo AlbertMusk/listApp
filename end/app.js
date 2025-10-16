@@ -33,7 +33,8 @@ app.use(function(req, res, next) {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.set("port", 3005);
+app.listen(3005, () => {
   console.log(`服务器已启动，监听端口 ${PORT}`);
 });
 

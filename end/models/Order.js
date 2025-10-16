@@ -10,3 +10,16 @@ const OrderSchema = new mongoose.Schema({
     createTime: { type: Date, default: Date.now },
     updateTime: { type: Date, default: Date.now },
 });
+
+OrderSchema.pre('save', function(next) {
+    if(this.isNew) {
+        this.createTime = this.updateTime = Date.now();
+    } else {
+        this.updateTime = Date.now();
+    }
+    next();
+});
+
+const Order = mongoose.model('Order', OrderSchema);
+
+module.exports = Order;
