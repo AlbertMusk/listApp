@@ -4,11 +4,6 @@ const User = require('../../models/User');
 const mongoose = require('mongoose');
 const sendResponse = require('../../utils/response');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send('User Home Page');
-});
-
 router.get('/create_test', async (req, res, next) => {
   try {
     const newUser = new User({
