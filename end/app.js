@@ -3,6 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
+const sendResponse = require('./utils/response');
+const User = require('./models/User');
+
+var app = express();
+
+
+app.use(cors());
 
 // 连接mongodb
 const connectDB = require('./db');
@@ -12,7 +20,36 @@ connectDB();
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
 
-var app = express();
+// 全局验证token
+app.use(async (req, res, next) => {
+  // 跳过登录和公开接口
+  if (req.path === '/api/user/login' || req.path === '/' || req.path.startsWith('/public')) {
+    return next()
+  }
+
+  const authHeader = req.headers.authorization
+
+  if (!authHeader) {
+    return sendResponse(res, {}, '未提供 token', -1)
+  }
+
+  // token 一般格式：Bearer xxx
+  const token = authHeader.split(' ')[1]
+
+  try {
+    console.log(token);
+    const user = await User.findByToken(token)
+    console.log(user);
+    if (!user) {
+      return sendResponse(res, {}, '无效的 token', -1)
+    }
+    req.user = user // 把解析的用户信息放到 req 上
+    next()
+  } catch (error) {
+    return sendResponse(res, {}, '无效的 token', -1)
+  }
+})
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,7 +70,6 @@ app.use(function(req, res, next) {
 });
 
 const PORT = process.env.PORT || 3000;
-app.set("port", 3005);
 app.listen(3005, () => {
   console.log(`服务器已启动，监听端口 ${PORT}`);
 });

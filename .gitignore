@@ -1,0 +1,62 @@
+# 注意：如果你想要的是 .gitignore，请重命名为 .gitignore
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json.lock
+.pnp/
+.pnpm-debug.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.test
+
+# Build outputs
+dist/
+build/
+out/
+target/
+public/build/
+
+# Logs and reports
+logs/
+*.log
+coverage/
+.nyc_output/
+
+# Editor / OS
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vercel/
+.cache-loader/
+node-repl-history
+
+# Misc
+*.local
+*.tsbuildinfo
+*.class
+*.exe
+*.dll
+*.so
+*.dylib
